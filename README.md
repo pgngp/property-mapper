@@ -1,4 +1,5 @@
 property-manager
 ================
 
-A Symfony project created on August 24, 2017, 4:43 pm.
+This is a JavaScript program that fetches property name, location, etc. from a third-party source and displays it in Google Maps.
+
