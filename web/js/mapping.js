@@ -21,28 +21,25 @@ function initMap()
                             lat : Number(data[i].latitude),
                             lng : Number(data[i].longitude)
                     };
-                    
+
                     var marker = new google.maps.Marker({
                         position : location,
                         map : map
                     });
-                    
+
                     var name = data[i].name;
                     var address = data[i].address1;
                     var marketId = data[i].marketId;
                     
-                    var contentStr = "<div id='content'>" + 
-                        "Name: " + name + "<br>" + 
-                        "Address: " + address + "<br>" + 
-                        "Market: " + marketId + "<br>" + 
+                    var contentStr = "<div id='content'>" +
+                        "Name: " + name + "<br>" +
+                        "Address: " + address + "<br>" +
+                        "Market: " + marketId + "<br>" +
                         "</div>";
-                    
+
                     var infoWindow = new google.maps.InfoWindow({
                         content: contentStr
                     });
-//                    map.setOptions({
-//                        gestureHandling: 'auto'
-//                    });
                     google.maps.event.addListener(marker, 'click', (function(marker, contentStr) {
                         return function() {
                             infoWindow.setContent(contentStr);
@@ -52,8 +49,8 @@ function initMap()
                             });
                         }
                     })(marker, contentStr));
-                    
-                    google.maps.event.addListener(infoWindow, 'closeclick', (function(marker, contentStr) {
+
+                    google.maps.event.addListener(infoWindow, 'closeclick', (function() {
                         return function() {
                             map.setOptions({
                                 gestureHandling: 'auto'
@@ -61,7 +58,6 @@ function initMap()
                         }
                     })(marker, contentStr));
                 }
-                
             },
             function(data) {
                 console.log("Error: Could not fetch properties.");
