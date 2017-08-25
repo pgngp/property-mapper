@@ -14,6 +14,18 @@ function initMap()
         center : manhattan
     });
     
+    var markets = [];
+    $.get("http://192.168.56.101:3000/markets").then(
+            function(data) {
+                for (var i = 0; i < data.length; ++i) {
+                    markets[data[i].id] = data[i].name;
+                }
+            },
+            function(data) {
+                console.log("Error: Could not fetch markets.")
+            }
+    );
+
     $.get("http://192.168.56.101:3000/properties").then(
             function(data) {
                 for (var i = 0; i < data.length; ++i) {
@@ -29,12 +41,12 @@ function initMap()
 
                     var name = data[i].name;
                     var address = data[i].address1;
-                    var marketId = data[i].marketId;
+                    var market = markets[data[i].submarketId];
                     
                     var contentStr = "<div id='content'>" +
                         "Name: " + name + "<br>" +
                         "Address: " + address + "<br>" +
-                        "Market: " + marketId + "<br>" +
+                        "Market: " + market + "<br>" +
                         "</div>";
 
                     var infoWindow = new google.maps.InfoWindow({
