@@ -2,8 +2,9 @@
  * Creates the property mapping page.
  */
 
-function initMap() 
-{   
+var rootUrl = "http://192.168.56.101:3000";
+
+function initMap() {   
     var manhattan = {
         lat : 40.7831,
         lng : -73.9712
@@ -15,7 +16,7 @@ function initMap()
     });
     
     var markets = [];
-    $.get("http://192.168.56.101:3000/markets").then(
+    $.get(rootUrl + "/markets").then(
             function(data) {
                 for (var i = 0; i < data.length; ++i) {
                     markets[data[i].id] = data[i].name;
@@ -26,7 +27,7 @@ function initMap()
             }
     );
 
-    $.get("http://192.168.56.101:3000/properties").then(
+    $.get(rootUrl + "/properties").then(
             function(data) {
                 for (var i = 0; i < data.length; ++i) {
                     var location = { 
@@ -76,3 +77,4 @@ function initMap()
             }
     );
 }
+
