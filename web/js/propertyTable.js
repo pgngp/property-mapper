@@ -164,7 +164,9 @@ function getProperties(markets, lastMarketId) {
     var properties = null;
     $.get(rootUrl + "/properties").then(
             function(data) {
-                properties = data;
+                properties = data.sort(function(a, b) {
+                    return b['name'] > a['name'] ? 1 : ((b['name'] < a['name']) ? -1 : 0);
+                });
                 displayPropertyTable(markets, lastMarketId, properties);
             },
             function(data) {
