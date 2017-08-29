@@ -1,7 +1,5 @@
 /**
  * Creates the property grid.
- * TODO 
- * (1) When infowindow is open, zoom buttons should dissapear.
  */
 
 var rootUrl = "http://192.168.56.101:3000";

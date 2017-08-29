@@ -68,14 +68,16 @@ function initMap() {
                             infoWindow.setContent(contentStr);
                             infoWindow.open(map, marker);
                             map.setOptions({
-                                gestureHandling: 'none'
+                                gestureHandling: 'none',
+                                disableDefaultUI: true
                             });
                         }
                     })(marker, contentStr));
                     google.maps.event.addListener(infoWindow, 'closeclick', (function() {
                         return function() {
                             map.setOptions({
-                                gestureHandling: 'auto'
+                                gestureHandling: 'auto',
+                                disableDefaultUI: false
                             });
                         }
                     })(marker, contentStr));
