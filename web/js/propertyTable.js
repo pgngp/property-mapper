@@ -1,8 +1,7 @@
 /**
  * Creates the property grid.
  * TODO 
- * (1) Whenever a property is added/edited, map should be refreshed
- * (2) When infowindow is open, zoom buttons should dissapear.
+ * (1) When infowindow is open, zoom buttons should dissapear.
  */
 
 var rootUrl = "http://192.168.56.101:3000";
@@ -18,12 +17,12 @@ function cancelEditing() {
 /**
  * Updates the given property using an AJAX call.
  * 
- * @param int propertyId    Property ID.
- * @param string name       Property name.
- * @param string addr       Property address.
- * @param int marketId      (Sub) Market ID.
- * @param double latitude   Property latitude.
- * @param double longitude  Property longitude.
+ * @param int       propertyId Property ID.
+ * @param string    name       Property name.
+ * @param string    addr       Property address.
+ * @param int       marketId   (Sub) Market ID.
+ * @param double    latitude   Property latitude.
+ * @param double    longitude  Property longitude.
  */
 function updateProperty(propertyId, name, addr, marketId, latitude, longitude) {
     $.ajax({
@@ -38,7 +37,7 @@ function updateProperty(propertyId, name, addr, marketId, latitude, longitude) {
             longitude: longitude
         },
         success : function(response) {
-            getMarkets();
+            location.reload();
         },
         error : function(xhr) {
             alert("Error: Could not update property");
@@ -168,11 +167,11 @@ function editRecord(row, propertyId, marketId) {
 /**
  * Adds the given property to the DB using an AJAX call.
  * 
- * @param int marketId          Market ID.
- * @param string name           Property name.
- * @param string addr           Property address.
- * @param double latitude       Property latitude.
- * @param double longitude      Property longitude.
+ * @param int       marketId       Market ID.
+ * @param string    name           Property name.
+ * @param string    addr           Property address.
+ * @param double    latitude       Property latitude.
+ * @param double    longitude      Property longitude.
  */
 function addProperty(marketId, name, addr, latitude, longitude) {
     $.ajax({
@@ -187,7 +186,7 @@ function addProperty(marketId, name, addr, latitude, longitude) {
             longitude: longitude
         },
         success : function(response) {
-            getMarkets();
+            location.reload();
         },
         error : function(xhr) {
             alert("Error: Could not add a property");
