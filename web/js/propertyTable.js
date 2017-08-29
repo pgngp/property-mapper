@@ -32,11 +32,34 @@ function updateProperty(propertyId, name, addr, marketId, latitude, longitude) {
 }
 
 function saveProperty(row, propertyId, marketId) {
-    var name = $("#nameEdit" + row).val();
-    var addr = $("#addrEdit" + row).val();
-    var market = $("#submarketIdEdit" + row).val();
-    var latitude = $("#latEdit" + row).val();
-    var longitude = $("#longEdit" + row).val();
+    var name = $.trim($("#nameEdit" + row).val());
+    var addr = $.trim($("#addrEdit" + row).val());
+    var market = $.trim($("#submarketIdEdit" + row).val());
+    var latitude = $.trim($("#latEdit" + row).val());
+    var longitude = $.trim($("#longEdit" + row).val());
+
+    // Validate input
+    var message = "";
+    if (name == "") {
+        message += "- Property name cannot be empty\n";
+    }
+    if (addr == "") {
+        message += "- Property address cannot be empty\n";
+    }
+    if (market == "") {
+        message += "- Property market name cannot be empty\n";
+    }
+    if (latitude == "") {
+        message += "- Property latitude cannot be empty\n";
+    }
+    if (longitude == "") {
+        message += "- Property longitude cannot be empty\n";
+    }
+    if (message != "") {
+        message = "Following errors occurred:\n" + message;
+        alert(message);
+        return;
+    }
 
     if (typeof marketIdMap[market] == "undefined") {
         $.ajax({
@@ -125,32 +148,34 @@ function addProperty(marketId, name, addr, latitude, longitude) {
     });
 }
 
-function addMarket(marketId, market, name, addr, latitude, longitude) {
-    $.ajax({
-        type : "POST",
-        url : rootUrl + "/markets",
-        async : true,
-        data : {
-            id : marketId,
-            name : market
-        },
-        success : function(response) {
-            addProperty(marketId, name, addr, latitude, longitude);
-        },
-        error : function(xhr) {
-            alert("Error: Could not add a property");
-            return;
-        }
-    });
+function addMarket(market, name, addr, latitude, longitude) {
+    if (typeof marketIdMap[market] == "undefined") {
+        $.ajax({
+            type : "POST",
+            url : rootUrl + "/markets",
+            async : true,
+            data : {
+                name : market
+            },
+            success : function(response) {
+                addProperty(response.id, name, addr, latitude, longitude);
+            },
+            error : function(xhr) {
+                alert("Error: Could not add a property");
+                return;
+            }
+        });
+    } else {
+        addProperty(marketIdMap[market], name, addr, latitude, longitude);
+    }
 }
 
-function addRecord(lastMarketId) {
+function addRecord() {
     var name = $.trim($("#propName").val());
     var addr = $.trim($("#propAddr").val());
     var market = $.trim($("#propMarket").val());
     var latitude = $.trim($("#propLat").val());
     var longitude = $.trim($("#propLong").val());
-    var newMarketId = lastMarketId + 1;
 
     // Validate input
     var message = "";
@@ -175,10 +200,10 @@ function addRecord(lastMarketId) {
         return;
     }
 
-    addMarket(newMarketId, market, name, addr, latitude, longitude);
+    addMarket(market, name, addr, latitude, longitude);
 }
 
-function displayPropertyTable(markets, lastMarketId, properties) {
+function displayPropertyTable(markets, properties) {
     markets.forEach(function(item, index) {
         marketIdMap[item] = index;
     });
@@ -228,13 +253,13 @@ function displayPropertyTable(markets, lastMarketId, properties) {
     content += "<td><input type='text' id='propMarket'/></td>";
     content += "<td><input type='text' id='propLat'/></td>";
     content += "<td><input type='text' id='propLong'/></td>";
-    content += "<td><a onclick='addRecord(" + lastMarketId + ");'>Add</a></td>";
+    content += "<td><a onclick='addRecord();'>Add</a></td>";
     content += "</tr>";
     content += "</table>";
     $("#grid").html(content);
 }
 
-function getProperties(markets, lastMarketId) {
+function getProperties(markets) {
     var properties = null;
     $.get(rootUrl + "/properties").then(
             function(data) {
@@ -247,7 +272,7 @@ function getProperties(markets, lastMarketId) {
                         return 0;
                     }
                 });
-                displayPropertyTable(markets, lastMarketId, properties);
+                displayPropertyTable(markets, properties);
             },
             function(data) {
                 alert("Error: Could not fetch properties.");
@@ -257,14 +282,12 @@ function getProperties(markets, lastMarketId) {
 
 function getMarkets() {
     var markets = [];
-    var maxId = 0;
     $.get(rootUrl + "/markets").then(
             function(data) {
                 data.forEach(function(item, index) {
                     markets[item.id] = item.name;
-                    maxId = Math.max(maxId, item.id);
                 });
-                getProperties(markets, maxId);
+                getProperties(markets);
             },
             function(data) {
                 alert("Error: Could not fetch markets.");
