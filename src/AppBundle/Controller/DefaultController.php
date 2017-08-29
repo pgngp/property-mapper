@@ -24,6 +24,6 @@ class DefaultController extends Controller
      */
     public function mappingAction()
     {
-        return $this->render('mapping.html.twig', array());
+        return $this->render('mapping.html', array());
     }
 }
