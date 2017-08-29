@@ -96,6 +96,7 @@ function editRecord(row, propertyId, marketId) {
     var nameId = "nameEdit" + row;
     var nameVal = $name.text();
     var nameInput = "<input type='text' id='" + nameId + "' value='" + nameVal + "'/>";
+    document.getElementById("name" + row).onclick = null;
     $name.html(nameInput);
 
     var addrId = "addrEdit" + row;
@@ -220,8 +221,12 @@ function displayPropertyTable(markets, properties) {
     for (var i = 0; i < properties.length; ++i) {
         var nameId = "name" + i;
         var propName = properties[i].name;
+        var propId = properties[i].id;
+        var marketId = properties[i].submarketId;
+        var funcCall = "editRecord(" + i + ", " + propId + ", " + marketId + ")";
         content += "<tr>";
-        content += "<td id='" + nameId + "'>" + propName + "</td>";
+        content += "<td id='" + nameId + "' onclick='" + funcCall + "'>" 
+            + propName + "</td>";
 
         var addrId = "addr" + i;
         var propAddr = properties[i].address1;
@@ -240,9 +245,9 @@ function displayPropertyTable(markets, properties) {
         content += "<td id='" + longId + "'>" + propLong + "</td>";
 
         var editId = "edit" + i;
-        var propId = properties[i].id;
-        var marketId = properties[i].submarketId;
-        var funcCall = "editRecord(" + i + ", " + propId + ", " + marketId + ")";
+//        var propId = properties[i].id;
+//        var marketId = properties[i].submarketId;
+//        var funcCall = "editRecord(" + i + ", " + propId + ", " + marketId + ")";
         var editLink = "<a onclick='" + funcCall + "'>Edit</a>";
         content += "<td id='" + editId + "'>" + editLink + "</td>";
         content += "</tr>";
