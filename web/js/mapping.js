@@ -2,6 +2,9 @@
  * Creates the property mapping page.
  */
 
+/**
+ * This is the URL that provides the API for properties and markets.
+ */
 var rootUrl = "http://192.168.56.101:3000";
 
 /**
